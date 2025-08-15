@@ -24,7 +24,7 @@ export default function FeatureCards() {
   return (
     <section className="bg-transparent text-white px-6 py-6">
       <p className="text-2xl font-sans font-extrabold text-center my-10 text-gray-300 mt-5">
-        Select who you'd like to chat with today.
+        Select who you&apos;d like to chat with today.
       </p>
       <div className="grid gap-8 md:grid-cols-2 items-stretch">
         {features.map((feature, index) => (

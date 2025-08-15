@@ -3,17 +3,22 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
+interface ChatMessage {
+  sender: "piyush" | "user";
+  text: string;
+  time?: string;
+}
+
 export default function Piyush() {
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
+  const [message, setMessage] = useState<string>("");
+  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
 
-  const chatContainerRef = useRef(null);
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const piyushImg =
-    "https://avatars.githubusercontent.com/u/44976328?v=4";
+  const piyushImg = "https://avatars.githubusercontent.com/u/44976328?v=4";
 
-  // Add default message from piyush on first load
+  // Add default message from Piyush on first load
   useEffect(() => {
     setChat([
       {
@@ -30,7 +35,8 @@ export default function Piyush() {
   // Scroll chat container to bottom when new messages arrive
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [chat, isTyping]);
 
@@ -170,7 +176,9 @@ export default function Piyush() {
           animation: bounce 0.6s infinite;
         }
         @keyframes bounce {
-          0%, 80%, 100% {
+          0%,
+          80%,
+          100% {
             transform: scale(0);
           }
           40% {

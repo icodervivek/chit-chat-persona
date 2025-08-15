@@ -3,17 +3,22 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
-export default function Hitesh() {
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
+interface ChatMessage {
+  sender: "user" | "hitesh";
+  text: string;
+  time?: string;
+}
 
-  const chatContainerRef = useRef(null);
+export default function Hitesh() {
+  const [message, setMessage] = useState<string>("");
+  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const hiteshImg =
     "https://yt3.googleusercontent.com/arHIKjc6JTqF_b4QJKPHhQC_Jr8q0XfI7LEpJ0-VuiI0ZRz9xFNz94TWl4CLOcozLx-iAhV_=s900-c-k-c0x00ffffff-no-rj";
 
-  // Add default message from Hitesh on first load
   useEffect(() => {
     setChat([
       {
@@ -27,10 +32,10 @@ export default function Hitesh() {
     ]);
   }, []);
 
-  // Scroll chat container to bottom when new messages arrive
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [chat, isTyping]);
 
@@ -72,7 +77,6 @@ export default function Hitesh() {
   return (
     <div className="font-sans min-h-screen text-white relative isolation-isolate overflow-hidden">
       <main className="pt-16 px-4 max-w-3xl mx-auto flex flex-col h-[calc(100vh-4rem)]">
-        {/* Chat container with scrollbar */}
         <div
           ref={chatContainerRef}
           className="flex-1 overflow-y-auto space-y-6 p-4 rounded-2xl mb-3"
@@ -130,7 +134,6 @@ export default function Hitesh() {
           )}
         </div>
 
-        {/* Message input */}
         <div className="flex items-center gap-2 p-2 border-t border-gray-700 bg-[#1a1a1a]">
           <input
             value={message}
@@ -170,7 +173,9 @@ export default function Hitesh() {
           animation: bounce 0.6s infinite;
         }
         @keyframes bounce {
-          0%, 80%, 100% {
+          0%,
+          80%,
+          100% {
             transform: scale(0);
           }
           40% {
