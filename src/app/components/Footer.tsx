@@ -27,21 +27,24 @@ const Footer = () => {
         {/* Links */}
         <div className="flex space-x-6 text-gray-400 text-lg">
           <a
-            href="#"
+            href="https://x.com/icodervivek"
+            target="_blank"
             className="hover:text-orange-400 transition-colors duration-300"
             aria-label="Twitter"
           >
             <FaTwitter />
           </a>
           <a
-            href="#"
+            href="https://github.com/icodervivek/chit-chat-persona"
+            target="_blank"
             className="hover:text-orange-400 transition-colors duration-300"
             aria-label="Github"
           >
             <FaGithub />
           </a>
           <a
-            href="#"
+            href="https://www.linkedin.com/in/vivekpramanik/"
+            target="_blank"
             className="hover:text-orange-400 transition-colors duration-300"
             aria-label="LinkedIn"
           >
