@@ -3,17 +3,29 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
-export default function Anshuman() {
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
+// ✅ Type for chat messages
+interface ChatMessage {
+  sender: "user" | "anshuman";
+  text: string;
+  time?: string;
+}
 
-  const chatContainerRef = useRef(null);
+// ✅ Type for API response
+interface ApiResponse {
+  reply: string;
+}
+
+export default function Anshuman() {
+  const [message, setMessage] = useState<string>("");
+  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const anshumanImg =
     "https://media.licdn.com/dms/image/v2/C4E03AQH4reDDF0vOEA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1652950452076?e=1758153600&v=beta&t=UZQCOQ9cYI0GIg90TT9Xa2dq_omlXTGcE-dBMCawO6w";
 
-  // Add default message from anshuman on first load
+  // ✅ Default message from anshuman
   useEffect(() => {
     setChat([
       {
@@ -27,17 +39,20 @@ export default function Anshuman() {
     ]);
   }, []);
 
-  // Scroll chat container to bottom when new messages arrive
+  // ✅ Auto-scroll to bottom on new messages
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   }, [chat, isTyping]);
 
+  // ✅ Send message
   const handleSend = async () => {
     if (!message.trim()) return;
 
+    // Add user message
     setChat((prev) => [...prev, { sender: "user", text: message }]);
+
     const currentMessage = message;
     setMessage("");
     setIsTyping(true);
@@ -49,7 +64,7 @@ export default function Anshuman() {
         body: JSON.stringify({ message: currentMessage }),
       });
 
-      const data = await res.json();
+      const data: ApiResponse = await res.json();
 
       setIsTyping(false);
       setChat((prev) => [
@@ -64,7 +79,7 @@ export default function Anshuman() {
         },
       ]);
     } catch (error) {
-      console.error("Error fetching AI response:", error);
+      console.error("❌ Error fetching AI response:", error);
       setIsTyping(false);
     }
   };
@@ -72,7 +87,7 @@ export default function Anshuman() {
   return (
     <div className="font-sans min-h-screen text-white relative isolation-isolate overflow-hidden">
       <main className="pt-16 px-4 max-w-3xl mx-auto flex flex-col h-[calc(100vh-4rem)]">
-        {/* Chat container with scrollbar */}
+        {/* Chat container */}
         <div
           ref={chatContainerRef}
           className="flex-1 overflow-y-auto space-y-6 p-4 rounded-2xl mb-3"
@@ -130,7 +145,7 @@ export default function Anshuman() {
           )}
         </div>
 
-        {/* Message input */}
+        {/* Input box */}
         <div className="flex items-center gap-2 p-2 border-t border-gray-700 bg-[#1a1a1a]">
           <input
             value={message}
@@ -170,7 +185,9 @@ export default function Anshuman() {
           animation: bounce 0.6s infinite;
         }
         @keyframes bounce {
-          0%, 80%, 100% {
+          0%,
+          80%,
+          100% {
             transform: scale(0);
           }
           40% {
