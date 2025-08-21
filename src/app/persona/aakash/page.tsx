@@ -3,17 +3,23 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 
-export default function Aakash() {
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
-  const [isTyping, setIsTyping] = useState(false);
+type ChatMessage = {
+  sender: "user" | "aakash";
+  text: string;
+  time?: string;
+};
 
-  const chatContainerRef = useRef(null);
+export default function Aakash() {
+  const [message, setMessage] = useState<string>("");
+  const [chat, setChat] = useState<ChatMessage[]>([]);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
+
+  const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   const aakashImg =
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8D9UgsyRNSDgzQAexoQoZKtG84s9qiQQkIVeuOtEUpQXmEmPCUStrCRU&s=10";
 
-  // Add default message from aakash on first load
+  // Default message on load
   useEffect(() => {
     setChat([
       {
@@ -27,10 +33,11 @@ export default function Aakash() {
     ]);
   }, []);
 
-  // Scroll chat container to bottom when new messages arrive
+  // Scroll to bottom on new chat
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
     }
   }, [chat, isTyping]);
 
@@ -72,7 +79,7 @@ export default function Aakash() {
   return (
     <div className="font-sans min-h-screen text-white relative isolation-isolate overflow-hidden">
       <main className="pt-16 px-4 max-w-3xl mx-auto flex flex-col h-[calc(100vh-4rem)]">
-        {/* Chat container with scrollbar */}
+        {/* Chat container */}
         <div
           ref={chatContainerRef}
           className="flex-1 overflow-y-auto space-y-6 p-4 rounded-2xl mb-3"
@@ -104,7 +111,7 @@ export default function Aakash() {
                   {c.text}
                 </div>
               </div>
-              {c.sender === "aakash" && (
+              {c.sender === "aakash" && c.time && (
                 <span className="text-xs text-gray-400 ml-11 mt-1">
                   Aakash Gorai • {c.time}
                 </span>
@@ -130,7 +137,7 @@ export default function Aakash() {
           )}
         </div>
 
-        {/* Message input */}
+        {/* Input */}
         <div className="flex items-center gap-2 p-2 border-t border-gray-700 bg-[#1a1a1a]">
           <input
             value={message}
